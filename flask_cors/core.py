@@ -117,6 +117,8 @@ def get_cors_origins(options, request_origin):
         # If the allowed origins is an asterisk or 'wildcard', always match
         if wildcard and options.get('send_wildcard'):
             LOG.debug("Allowed origins are set to '*'. Sending wildcard CORS header.")
+            if options.get('supports_credentials'):
+                return request_origin
             return ['*']
         # If the value of the Origin header is a case-sensitive match
         # for any of the values in list of origins
@@ -138,6 +140,8 @@ def get_cors_origins(options, request_origin):
             # thing to do (the only other option is to return nothing, which)
             # pretty is probably not whawt you want if you specify origins as
             # '*'
+            if options.get('supports_credentials'):
+                return request_origin
             return ['*']
         else:
             # Return all origins that are not regexes.
